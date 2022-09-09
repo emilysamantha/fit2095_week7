@@ -29,8 +29,9 @@ app.get("/sender/:name", senders.getAllParcelsByName);
 app.post("/sender", senders.createNewSender);
 app.delete("/sender", senders.deleteSenderByID);
 app.put("/sender", senders.updateNameByID);
+app.put("/sender/parcel", senders.addNewParcel);
 
 // Parcel RESTFul Endpoints
-app.post("/parcel", parcels.addNewParcel);
 app.get("/parcel", parcels.getParcelsByAddress);
 app.put("/parcel", parcels.updateAddressByID);
+app.put("/parcel/weight", parcels.updateWeightbyID);

@@ -38,12 +38,35 @@ module.exports = {
   updateNameByID: function (req, res) {
     Sender.findOneAndUpdate(
       { _id: req.body.id },
-      req.body.update,
+      { name: req.body.name },
       function (err, sender) {
         if (err) return res.status(400).json(err);
         if (!sender) return res.status(404).json();
         res.json(sender);
       }
     );
+  },
+
+  // Task 2. Add Parcel to Sender
+  addNewParcel: function (req, res) {
+    let newParcelDetails = req.body.parcel;
+    newParcelDetails._id = new mongoose.Types.ObjectId();
+    console.log(newParcelDetails);
+
+    let parcel = new Parcel(newParcelDetails);
+    parcel.save(function (err) {
+      console.log("Done");
+    });
+
+    Sender.findOne({ _id: req.body.id }, function (err, sender) {
+      if (err) return res.status(400).json(err);
+      if (!sender) return res.status(404).json();
+
+      sender.parcels.push(newParcelDetails._id);
+      sender.save(function (err) {
+        if (err) return res.status(500).json(err);
+        res.json(sender);
+      });
+    });
   },
 };
